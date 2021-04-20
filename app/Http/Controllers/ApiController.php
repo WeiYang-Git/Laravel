@@ -35,6 +35,10 @@ class ApiController extends Controller
             return 'Opration failed. Key is empty.';
         }
 
+        if(empty($req->value)){
+            return 'Opration failed. Value is empty.';
+        }
+
         if (API::where('key_value', '=', $req->key)->exists()) { // Key Found
             $result = API::where('key_value', '=', $req->key)->update(['value' => $req->value]);
         }else{
@@ -53,6 +57,10 @@ class ApiController extends Controller
     public function updateData(Request $req){
         $api = API::find($req->id);
         
+        if(empty($req->key) || empty($req->key)){
+            return 'Key or Value cannot be empty.';
+        }
+
         $result = '';
         if($api){
             $api->key_value = $req->key;
