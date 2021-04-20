@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\APIController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('records', [APIController::class, 'getData']);
-Route::get('search', [APIController::class, 'getDataValueByKey']);
-Route::post('add', [APIController::class, 'addData']);
-Route::post('update', [APIController::class, 'updateData']);
+Route::get('records', [ApiController::class, 'getData']);
+Route::get('search', [ApiController::class, 'getDataValueByKey']);
+Route::post('add', [ApiController::class, 'addData']);
+Route::post('update', [ApiController::class, 'updateData']);
