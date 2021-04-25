@@ -8,7 +8,10 @@ use App\Models\Api;
 class ApiController extends Controller
 {
     public function getData(){
-        return API::all();
+        return response()->json([
+            'head' => 'OK',
+            'response' => API::all(),
+        ]);
     }
 
     public function getDataValueByKey(Request $req){
@@ -20,23 +23,26 @@ class ApiController extends Controller
         }
 
         if(!empty($api->value)){
-            $response = 'Response: '.$api->value.' '.$timestamp;
+            return response()->json([
+                'head' => 'OK',
+                'response' => 'Response: '.$api->value.' '.$timestamp,
+            ]);
         }else{
-            $response = 'Operation failed. Unable to find the key.';
+            return response()->json([
+                'head' => 'ERROR',
+                'response' => 'Unable to find the key.',
+            ]);
         }
-
-        return $response;
     }
 
     public function addData(Request $req){
         $api = new API;
         
-        if(empty($req->key)){
-            return 'Opration failed. Key is empty.';
-        }
-
-        if(empty($req->value)){
-            return 'Opration failed. Value is empty.';
+        if(empty($req->key) || empty($req->value)){
+            return response()->json([
+                'head' => 'ERROR',
+                'response' => 'Key or Value given is empty.',
+            ]);
         }
 
         if (API::where('key_value', '=', $req->key)->exists()) { // Key Found
@@ -48,9 +54,15 @@ class ApiController extends Controller
         }
 
         if($result){
-            return 'Data has been successfully saved.';
+            return response()->json([
+                'head' => 'OK',
+                'response' => 'Data has been successfully saved.',
+            ]);
         }else{
-            return 'Operation add failed.';
+            return response()->json([
+                'head' => 'ERROR',
+                'response' => 'Operation add failed.',
+            ]);
         }
     }
 
@@ -58,7 +70,10 @@ class ApiController extends Controller
         $api = API::find($req->id);
         
         if(empty($req->key) || empty($req->key)){
-            return 'Key or Value cannot be empty.';
+            return response()->json([
+                'head' => 'ERROR',
+                'response' => 'Key or Value given cannot be empty.',
+            ]);
         }
 
         $result = '';
@@ -69,9 +84,15 @@ class ApiController extends Controller
         }
 
         if($result){
-            return 'Data has been successfully updated.';
+            return response()->json([
+                'head' => 'OK',
+                'response' => 'Data has been successfully updated.',
+            ]);
         }else{
-            return 'Operation update failed. Unable to find Id.';
+            return response()->json([
+                'head' => 'ERROR',
+                'response' => 'Operation update failed. ID not found.'
+            ]);
         }
     }
 }
